@@ -58,9 +58,21 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/assests/Images/
+
+  fonts:
+    - family: PoppinsBold
+      fonts:
+        - asset: lib/assests/fonts/Poppins-ExtraBold.ttf
+
+    - family: PoppinsSemiBold
+      fonts:
+        - asset: lib/assests/fonts/Poppins-SemiBold.ttf
+
+    - family: PoppinsMed
+      fonts:
+        - asset: lib/assests/fonts/Poppins-Medium.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
