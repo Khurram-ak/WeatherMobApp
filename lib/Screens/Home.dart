@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/Modal/WeatherModal.dart';
 import 'package:weather_app/Services/WeatherApi.dart';
 
@@ -18,7 +19,8 @@ class _HomeState extends State<Home> {
   WeatherApi weatherApi = WeatherApi();
   String? Country, Area, Condition;
   double? Temp;
-  Hour? hr1, hr2, hr3, hr4, hr5;
+  Hour? hr1,hr2,hr3,hr4,hr5;
+  final dateFormat= DateFormat("hh:mm a");
 
   void initState() {
     super.initState();
@@ -36,16 +38,13 @@ class _HomeState extends State<Home> {
                 }
               }));
       weatherApi.GetForecast(position: widget.position).then((value) => {
-            if (value != null)
-              {
-                setState((){
-                hr1= value['hour1'];
-                hr2= value['hour2'];
-                hr3= value['hour3'];
-                hr4= value['hour4'];
-                hr5= value['hour5'];
-              })
-              }
+            setState(() {
+              hr1 = (value['hour1'] as Hour);
+              hr2 = (value['hour2'] as Hour);
+              hr3 = (value['hour3'] as Hour);
+              hr4 = (value['hour4'] as Hour);
+              hr5 = (value['hour5'] as Hour);
+            })
           });
     } else if (widget.city != null) {
       weatherApi.GetCurrent(city: widget.city).then((value) => setState(() {
@@ -59,9 +58,18 @@ class _HomeState extends State<Home> {
               isDay == false;
             }
           }));
+      weatherApi.GetForecast(city: widget.city).then((value) => {
+        setState(() {
+          hr1 = (value['hour1'] as Hour);
+          hr2 = (value['hour2'] as Hour);
+          hr3 = (value['hour3'] as Hour);
+          hr4 = (value['hour4'] as Hour);
+          hr5 = (value['hour5'] as Hour);
+        })
+      });
     }
-  print(hr1!.tempC);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,12 +178,13 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("${hr1!.tempC ?? 0}"),
+                        Text("${hr1!.tempC}° "),
                       ],
                     ),
                     Column(
+    // style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)
                       children: [
-                        Text("Now"),
+                        Text(dateFormat.format(DateTime.parse(hr2?.time ?? "2022-05-20 23:12:20.000"))),
                         SizedBox(
                           height: 10,
                         ),
@@ -183,12 +192,12 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("${hr2!.tempC ?? 0}"),
+                        Text("${hr2!.tempC}° "),
                       ],
                     ),
                     Column(
                       children: [
-                        Text("Now"),
+                        Text(dateFormat.format(DateTime.parse(hr3?.time ?? "2022-05-20 23:12:20.000"))),
                         SizedBox(
                           height: 10,
                         ),
@@ -196,12 +205,12 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("${hr3!.tempC ?? 0}"),
+                        Text("${hr3!.tempC}° "),
                       ],
                     ),
                     Column(
                       children: [
-                        Text("Now"),
+                        Text(dateFormat.format(DateTime.parse(hr4?.time ?? "2022-05-20 23:12:20.000"))),
                         SizedBox(
                           height: 10,
                         ),
@@ -209,12 +218,12 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("${hr4!.tempC ?? 0}"),
+                        Text("${hr4!.tempC}° "),
                       ],
                     ),
                     Column(
                       children: [
-                        Text("Now"),
+                        Text(dateFormat.format(DateTime.parse(hr5?.time ?? "2022-05-20 23:12:20.000"))),
                         SizedBox(
                           height: 10,
                         ),
@@ -222,7 +231,7 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("${hr5!.tempC ?? 0}"),
+                        Text("${hr5!.tempC}° "),
                       ],
                     ),
                   ],
