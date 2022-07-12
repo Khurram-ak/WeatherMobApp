@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/Screens/Home.dart';
+import 'package:weather_app/Screens/Home2.dart';
 import 'package:weather_app/Screens/SelectCity.dart';
 import 'package:weather_app/Screens/Selection.dart';
 import 'package:weather_app/Screens/Splash.dart';
@@ -33,9 +34,14 @@ class MyApp extends StatelessWidget {
           pageToShow = SelectionPage();
         } else if (settings.name == "/selectCity") {
           pageToShow = SelectCity();
-
         } else if (settings.name == "/home") {
-          pageToShow = Home();
+          if (settings.arguments != null) {
+            // print();
+            pageToShow = Home(
+              position: (settings.arguments as Map<String,dynamic>)['position'],
+              city:(settings.arguments as Map<String,dynamic>)['city']
+            );
+          }
         }
         return MaterialPageRoute<String>(
             builder: (ctx) => pageToShow, settings: settings);

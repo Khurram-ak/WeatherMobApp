@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/Services/GeoLocator.dart';
 
 class SelectionPage extends StatelessWidget {
-  const SelectionPage({Key? key}) : super(key: key);
+  SelectionPage({Key? key}) : super(key: key);
+
+  GeoLocator geo = new GeoLocator();
 
   @override
   Widget build(BuildContext context) {
@@ -20,53 +24,71 @@ class SelectionPage extends StatelessWidget {
               )),
           Spacer(),
           GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, "/home");
+            onTap: () {
+              onCurrentLocation(context);
             },
             child: Container(
                 height: 72,
-                margin: EdgeInsets.only(left: 15,right: 15),
-                padding: EdgeInsets.only(left: 20,right: 15),
-                decoration:
-                BoxDecoration(
-                  color: Color(0xffE0E0E0),
-                    borderRadius: BorderRadius.circular(15)
-                ),
+                margin: EdgeInsets.only(left: 15, right: 15),
+                padding: EdgeInsets.only(left: 20, right: 15),
+                decoration: BoxDecoration(
+                    color: Color(0xffE0E0E0),
+                    borderRadius: BorderRadius.circular(15)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Select Current Location",style: TextStyle(fontFamily: "PoppinsMed",fontSize: 20),),
+                    Text(
+                      "Select Current Location",
+                      style: TextStyle(fontFamily: "PoppinsMed", fontSize: 20),
+                    ),
                     Image.asset("lib/assests/Images/rightArrow.png")
                   ],
                 )),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, "/selectCity");
             },
             child: Container(
                 height: 72,
-                margin: EdgeInsets.only(left: 15,right: 15),
-                padding: EdgeInsets.only(left: 20,right: 15),
-                decoration:
-                    BoxDecoration(
-                        color: Color(0xff6DC9EF),
-                        borderRadius: BorderRadius.circular(15)
-                    ),
+                margin: EdgeInsets.only(left: 15, right: 15),
+                padding: EdgeInsets.only(left: 20, right: 15),
+                decoration: BoxDecoration(
+                    color: Color(0xff6DC9EF),
+                    borderRadius: BorderRadius.circular(15)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Select City",style: TextStyle(fontFamily: "PoppinsMed",fontSize: 20,color: Colors.white),),
+                    Text(
+                      "Select City",
+                      style: TextStyle(
+                          fontFamily: "PoppinsMed",
+                          fontSize: 20,
+                          color: Colors.white),
+                    ),
                     Image.asset("lib/assests/Images/downArrow.png")
-
                   ],
                 )),
           ),
-          SizedBox(height: 40,),
-
+          SizedBox(
+            height: 40,
+          ),
         ],
       ),
     );
+  }
+
+  void onCurrentLocation(context) async{
+    GeoLocator geoLocator =new GeoLocator();
+    Position  position=await geoLocator.determinePosition();
+
+      Navigator.pushNamed(context, "/home",arguments: {
+        "position":position
+      }
+   );
+
   }
 }
